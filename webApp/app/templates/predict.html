@@ -6,27 +6,28 @@
 
 <h1>Predict for user : {{ id }}</h1>
 <h2>Est-ce que tu vas revoir la thune :</h2>
-
-{{df}}
-
+<br>
+<br>
+<br>
+<h4>User want a <strong>{{ userLoan }}</strong></h4>
+<br>
+<br>
 <div id="barchart_material" style="width: 900px; height: 500px;"></div>
 
 
 {% endblock %} {% block scripts %} {{ super() }}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-    var chart1 = {
-        {
-            chart1
-        }
-    };
+    var mod_chart = {{ mod_chart | safe }};
+    console.log(mod_chart.array1)
+    //console.log(chart1.split())
     google.charts.load('current', {
         'packages': ['bar']
     });
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
-        var data = google.visualization.arrayToDataTable(chart1);
+        var data = google.visualization.arrayToDataTable(mod_chart.array1);
 
         var options = {
             chart: {
