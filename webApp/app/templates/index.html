@@ -10,8 +10,13 @@
     <form method="post" action="{{ url_for('main.predict') }}">
         <div class="form-group">
             <label>Numéro de dossier</label>
-            <input type="number" class="form-control" id="id" name="id" placeholder="Numéro de dossier" min="0">
-            <small id="idHelp" class="form-text text-muted">Attention à rentrer un identifiant de dossier existant.</small>
+            <select id="id" name="id" placeholder="Numéro de dossier">
+                <option value="194194">194194</option>
+                <option value="114516">114516</option>
+                <option value="152689">152689</option>
+                <option value="164011">164011</option>
+                <option value="127325">127325</option>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

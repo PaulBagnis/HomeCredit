@@ -5,21 +5,41 @@
 {% block page_content %}
 
 <h1>Predict for user : {{ id }}</h1>
-<h2>Est-ce que tu vas revoir la thune :</h2>
+<!--condition sur le predict pour dire si valide ou non-->
+{% if list_test[1] == 0 %}
+    <h2>Prospect is <strong>viable</strong></h2>
+    <h3>IA is {{ list_test[2][0] }}% sure.</h3>
+{% endif %}
+{% if list_test[1] == 1 %}
+    <h2>Prospect is <strong>not viable</strong></h2>
+    <h3>IA is {{ list_test[2][1] }}% sure.</h3>
+{% endif %}
 <br>
 <br>
-<br>
-<h4>User want a <strong>{{ userLoan }}</strong></h4>
-<br>
-<br>
+<hr>
+<h4>Prospect is in the <strong>{{ prospectLoan }}</strong> category</h4>
 <div id="barchart_material" style="width: 900px; height: 500px;"></div>
+<hr>
+<!--Chart des réponses en fonction des EXT_SOURCE_2 et EXT_SOURCE_3-->
+<div id="barchart_material2" style="width: 900px; height: 500px;"></div>
+<hr>
+<!--Chart réprésentant la moyenne des DAYS_BIRTH de ceux qui paye et pareil pour ceux qui payent pas et donner le DAYS_BIRTH du prospect en test-->
+<div id="barchart_material3" style="width: 900px; height: 500px;"></div>
+<hr>
+<!--le crédit term avg de ceux qui payent et ceus qui payent pas et le credit term du prospect test-->
+<div id="barchart_material4" style="width: 900px; height: 500px;"></div>
+<hr>
+
+{% endblock %}
+
+{% block scripts %} {{ super() }}
 
 
-{% endblock %} {% block scripts %} {{ super() }}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-    var mod_chart = {{ mod_chart | safe }};
-    console.log(mod_chart.array1)
+    // CHART SUR LES TYPES DE PRETS
+    var mod_chart1 = {{ mod_chart1 | safe }};
+    console.log(mod_chart1.array1)
     //console.log(chart1.split())
     google.charts.load('current', {
         'packages': ['bar']
@@ -27,17 +47,94 @@
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
-        var data = google.visualization.arrayToDataTable(mod_chart.array1);
+        var data = google.visualization.arrayToDataTable(mod_chart1.array1);
 
         var options = {
             chart: {
                 title: 'Types of loans',
                 subtitle: 'Get money back from type of loan',
             },
-            bars: 'horizontal' // Required for Material Bar Charts.
+            bars: 'vertical' // Required for Material Bar Charts.
         };
 
         var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+
+
+    // CHART SUR LES EXT_SOURCES
+    var mod_chart2 = {{ mod_chart2 | safe }};
+    console.log(mod_chart2.array1)
+    //console.log(chart1.split())
+    google.charts.load('current', {
+        'packages': ['bar']
+    });
+    google.charts.setOnLoadCallback(drawChart2);
+
+    function drawChart2() {
+        var data = google.visualization.arrayToDataTable(mod_chart2.array1);
+
+        var options = {
+            chart: {
+                title: 'External Sources',
+                subtitle: 'Prospect score VS average scores from external source(s)',
+            },
+            bars: 'horizontal' // Required for Material Bar Charts.
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barchart_material2'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+
+    // CHART SUR LES DAYS_BIRTH avg
+    var mod_chart3 = {{ mod_chart3 | safe }};
+    console.log(mod_chart3.array1)
+    //console.log(chart1.split())
+    google.charts.load('current', {
+        'packages': ['bar']
+    });
+    google.charts.setOnLoadCallback(drawChart3);
+
+    function drawChart3() {
+        var data = google.visualization.arrayToDataTable(mod_chart3.array1);
+
+        var options = {
+            chart: {
+                title: 'Days Lived',
+                subtitle: 'Prospect\'s age VS average age in days',
+            },
+            bars: 'vertical' // Required for Material Bar Charts.
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barchart_material3'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+
+
+    // CHART SUR LES CREDIT_TERM avg
+    var mod_chart4 = {{ mod_chart4 | safe }};
+    console.log(mod_chart4.array1)
+    //console.log(chart1.split())
+    google.charts.load('current', {
+        'packages': ['bar']
+    });
+    google.charts.setOnLoadCallback(drawChart4);
+
+    function drawChart4() {
+        var data = google.visualization.arrayToDataTable(mod_chart4.array1);
+
+        var options = {
+            chart: {
+                title: 'Credit Amount',
+                subtitle: 'Prospect\'s VS average',
+            },
+            bars: 'vertical' // Required for Material Bar Charts.
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barchart_material4'));
 
         chart.draw(data, google.charts.Bar.convertOptions(options));
     }
